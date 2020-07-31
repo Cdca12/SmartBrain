@@ -1,19 +1,45 @@
 import React, { Component } from 'react';
-import Navigation from './components/Navigation/Navigation'
-import Logo from './components/Logo/Logo'
+import Navigation from './components/Navigation/Navigation';
+import Logo from './components/Logo/Logo';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import Rank from './components/Rank/Rank';
+import Particles from 'react-particles-js';
 import './App.css';
+
+const particleParams = {
+  // polygon: {
+  //   enable: true,
+  //   move: {
+  //     radius: 10
+  //   },
+
+  particles: {
+    number: {
+      value: 100,
+      density: {
+        enable: true,
+        value_area: 800
+      }
+    }
+  },
+}
+
 
 class App extends Component {
   render() {
-    return(
+    return (
       <div className="App">
+        <Particles className="particles"
+          params={particleParams} />
         <Navigation />
         <Logo />
-        {/* {<ImageLinkForm />
-        <FaceRecognition /> } */}
+        <Rank />
+        <ImageLinkForm />
+        {/*<FaceRecognition /> } */}
       </div>
     );
   }
 }
 
 export default App;
+
