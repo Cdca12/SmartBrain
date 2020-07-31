@@ -7,7 +7,7 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition'
 import Particles from 'react-particles-js';
 import ClarifaiAPI from './API/Clarifai';
 import './App.css';
-import { COLOR_MODEL } from 'clarifai';
+import clarifai from 'clarifai';
 
 
 const particleParams = {
@@ -40,12 +40,11 @@ class App extends Component {
     this.setState({ imageUrl: this.state.userInput });
 
     ClarifaiAPI.models.predict(
-      // "a403429f2ddf4b49b307e318f00e528b", FACE DETECTION MODEL
-      COLOR_MODEL,
+      clarifai.FACE_DETECT_MODEL,
       this.state.userInput
       ).then(
       function (response) {
-        console.log(response);
+        console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
       },
       function (err) {
         console.log("Error!", err);
