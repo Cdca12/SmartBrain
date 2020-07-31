@@ -4,15 +4,11 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
+import ClarifaiAPI from './API/Clarifai';
 import './App.css';
 
-const particleParams = {
-  // polygon: {
-  //   enable: true,
-  //   move: {
-  //     radius: 10
-  //   },
 
+const particleParams = {
   particles: {
     number: {
       value: 100,
@@ -24,8 +20,32 @@ const particleParams = {
   },
 }
 
-
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      userInput: ""
+    }
+  }
+
+  handleInputChange = (evt) => {
+    this.setState({ userInput: evt.target.value });
+  }
+
+  submitImage = () => {
+    console.log("Click!");
+    ClarifaiAPI.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
+      function (response) {
+        // do something with response
+        console.log(response);
+      },
+      function (err) {
+        // there was an error
+      }
+    );
+  }
+
   render() {
     return (
       <div className="App">
@@ -34,7 +54,9 @@ class App extends Component {
         <Navigation />
         <Logo />
         <Rank />
-        <ImageLinkForm />
+        <ImageLinkForm
+          handleInputChange={this.handleInputChange}
+          submitImage={this.submitImage} />
         {/*<FaceRecognition /> } */}
       </div>
     );

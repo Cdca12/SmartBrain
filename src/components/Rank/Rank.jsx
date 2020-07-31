@@ -5,10 +5,10 @@ const Rank = () => {
         // Hard code. TODO: Make it dinamic
         <div>
             <div className="white f3">
-                {"Andrei, your current ranks is..."}
+                {"Carlos, your current ranks is..."}
             </div>
             <div className="white f1">
-                {"#5"}
+                {"#12"}
             </div>
         </div>
     );
