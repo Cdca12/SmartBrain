@@ -3,9 +3,11 @@ import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition'
 import Particles from 'react-particles-js';
 import ClarifaiAPI from './API/Clarifai';
 import './App.css';
+import { COLOR_MODEL } from 'clarifai';
 
 
 const particleParams = {
@@ -25,7 +27,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      userInput: ""
+      userInput: "",
+      imageUrl: ""
     }
   }
 
@@ -34,14 +37,18 @@ class App extends Component {
   }
 
   submitImage = () => {
-    console.log("Click!");
-    ClarifaiAPI.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
+    this.setState({ imageUrl: this.state.userInput });
+
+    ClarifaiAPI.models.predict(
+      // "a403429f2ddf4b49b307e318f00e528b", FACE DETECTION MODEL
+      COLOR_MODEL,
+      this.state.userInput
+      ).then(
       function (response) {
-        // do something with response
         console.log(response);
       },
       function (err) {
-        // there was an error
+        console.log("Error!", err);
       }
     );
   }
@@ -57,7 +64,7 @@ class App extends Component {
         <ImageLinkForm
           handleInputChange={this.handleInputChange}
           submitImage={this.submitImage} />
-        {/*<FaceRecognition /> } */}
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
