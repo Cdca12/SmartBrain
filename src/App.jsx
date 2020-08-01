@@ -29,6 +29,9 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      username: "",
+      password: "",
+
       userInput: "",
       imageUrl: "",
       box: {},
@@ -71,13 +74,33 @@ class App extends Component {
       .catch(err => console.log("Error!", err));
   }
 
+  handleUsernameChange = (evt) => {
+    this.setState({ username: evt.target.value });
+  }
+
+  handlePasswordChange = (evt) => {
+    this.setState({ password: evt.target.value });
+  }
+
   onRouteChange = (route) => {
     if (route === "signout") {
       this.setState({ isSignedIn: false })
-    } else if (route === "home") {
-      this.setState({ isSignedIn: true })
     }
-    this.setState({ route });
+    // } else if (route === "home") {
+    //   this.setState({ isSignedIn: true })
+    // }
+
+    if (route === "home"
+      && this.state.username.toLowerCase() === "cdca"
+      && this.state.password === "123") {
+      this.setState({ isSignedIn: true, route });
+      return;
+    }
+
+    if (route === "register" || route === "signin" || route === "signout") {
+      this.setState({ route });
+    }
+
   }
 
   render() {
@@ -101,7 +124,10 @@ class App extends Component {
             </div>
             : (
               route === "signin"
-                ? <SignIn onRouteChange={this.onRouteChange} />
+                ? <SignIn
+                  handleUsernameChange={this.handleUsernameChange}
+                  handlePasswordChange={this.handlePasswordChange}
+                  onRouteChange={this.onRouteChange} />
                 : <Register onRouteChange={this.onRouteChange} />
             )
 
