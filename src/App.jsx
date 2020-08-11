@@ -40,6 +40,13 @@ class App extends Component {
     }
   }
 
+  // TEST
+  // componentDidMount() {
+  //   fetch("http://localhost:3000")
+  //   .then(res => res.json())
+  //   .then(data => console.log(data))
+  // }
+
   calculateFaceLocation = (data) => {
     let clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     let image = document.getElementById("inputImage");
