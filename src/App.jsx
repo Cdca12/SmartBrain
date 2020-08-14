@@ -87,14 +87,43 @@ class App extends Component {
     this.setState({ userInput: evt.target.value });
   }
 
-  submitImage = () => {
+  onImageSubmit = () => {
     this.setState({ imageUrl: this.state.userInput });
 
     ClarifaiAPI.models.predict(
       clarifai.FACE_DETECT_MODEL,
       this.state.userInput
-    )
-      .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+      )
+      .then(res => {
+        this.displayFaceBox(this.calculateFaceLocation(res))
+
+        if (res) {
+          let user = {
+            id: this.state.user.id
+          }
+          
+          let request = {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+          }
+          fetch("http://localhost:3000/image", request)
+          .then(res => res.json())
+          .then(entries => {
+            this.setState(prevState => ({
+              user: {
+                ...prevState.user,
+                entries
+              }
+            }));
+          })
+            .catch(e => console.log("Image submit error:", e))
+          }
+          
+          
+      })
       .catch(err => console.log("Error!", err));
   }
 
@@ -123,7 +152,7 @@ class App extends Component {
               <Rank name={this.state.user.name} entries={this.state.user.entries} />
               <ImageLinkForm
                 handleInputChange={this.handleInputChange}
-                submitImage={this.submitImage} />
+                onImageSubmit={this.onImageSubmit} />
               <FaceRecognition box={box} imageUrl={imageUrl} />
             </div>
             : (
