@@ -33,11 +33,12 @@ class SignIn extends Component {
 
         fetch("http://localhost:3000/signin", request)
         .then(res => res.json())
-        .then(data => {
-            if (data === "Login Success!") {
+        .then(user => {
+            if (user.id) {
+                this.props.loadUser(user);
                 this.props.onRouteChange("home");
             } else {
-                alert(data);
+                alert("Sign In Error!");
             }
         })
         

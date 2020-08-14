@@ -29,8 +29,13 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      username: "",
-      password: "",
+      user: {
+        id: "",
+        name: "",
+        username: "",
+        entries: 0,
+        joined: ""
+      },
 
       userInput: "",
       imageUrl: "",
@@ -46,6 +51,18 @@ class App extends Component {
   //   .then(res => res.json())
   //   .then(data => console.log(data))
   // }
+
+  loadUser = (user) => {
+    this.setState({
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        entries: user.entries,
+        joined: user.joined
+      },
+    });
+  }
 
   calculateFaceLocation = (data) => {
     let clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -103,7 +120,7 @@ class App extends Component {
             ? <div>
               <Logo />
 
-              <Rank />
+              <Rank name={this.state.user.name} entries={this.state.user.entries} />
               <ImageLinkForm
                 handleInputChange={this.handleInputChange}
                 submitImage={this.submitImage} />
@@ -111,8 +128,8 @@ class App extends Component {
             </div>
             : (
               route === "signin"
-                ? <SignIn onRouteChange={this.onRouteChange} />
-                : <Register onRouteChange={this.onRouteChange} />
+                ? <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+                : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
             )
 
 

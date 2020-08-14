@@ -1,14 +1,16 @@
 import React from 'react';
 
-const Rank = () => {
+const Rank = (props) => {
+
+    const { name, entries } = props;
+
     return (
-        // Hard code. TODO: Make it dinamic
         <div>
             <div className="white f3">
-                {"Carlos, your current ranks is..."}
+                {`${name}, your current ranks is...`}
             </div>
             <div className="white f1">
-                {"#12"}
+                {entries}
             </div>
         </div>
     );
